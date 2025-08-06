@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Monaco Editor Demo</title>
+  <style>
+    #editor {
+      height: 400px;
+      width: 400px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Hidden textarea for Django to receive data -->
+<textarea id="code" name="code" style="display:none;"></textarea>
+
+<!-- Editor container -->
+<div id="editor"></div>
+
+<!-- Load Monaco Editor -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs/loader.min.js"></script>
+<script>
+  require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs' }});
+  require(['vs/editor/editor.main'], function () {
+    const editor = monaco.editor.create(document.getElementById('editor'), {
+      value: '',
+      language: 'python',
+      theme: 'vs-dark',
+      fontSize: 14
+    });
+
+    // Sync Monaco content to hidden textarea on change
+    editor.onDidChangeModelContent(() => {
+      document.getElementById('code').value = editor.getValue();
+    });
+  });
+</script>
+</body>
+</html>

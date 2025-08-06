@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Question Browser</title>
+  <style>
+    /* 🔵 CSS remains exactly same as you had */
+
+
+   .filter-form {
+  display: flex;
+  flex-direction: column;
+  background-color: #202d42;
+  padding: 15px;
+  border-radius: 8px;
+  height: calc(100vh - 40px);
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+}
+
+.filter-form h2 {
+  font-size: 16px;
+  margin: 20px 0 10px;
+  color: #ffffff;
+  border-bottom: 1px solid #005fa3;
+  padding-bottom: 5px;
+}
+
+.filter-option {
+  display: flex;
+  align-items: center;
+  margin: 6px 0;
+  font-size: 14px;
+  color: #f0f0f0;
+}
+
+.filter-option input[type="checkbox"] {
+  accent-color: #007bff;
+  transform: scale(1.1);
+  margin-right: 8px;
+}
+
+.apply-container {
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.apply-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.apply-button:hover {
+  background-color: #005fcb;
+}
+
+    body {
+      margin: 0;
+      display: flex;
+      font-family: Arial, sans-serif;
+    }
+    .sidebar {
+      width: 200px;
+      background-color: #1e293b;
+      color: white;
+      padding: 20px;
+      height: 100vh;
+    }
+    .sidebar h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    .tag {
+      padding: 8px;
+      margin: 5px 0;
+      background-color: #004b87;
+      cursor: pointer;
+      border-radius: 4px;
+      text-decoration: none;
+      display: block;
+      color: white;
+    }
+    .tag:hover {
+      background-color: #0060aa;
+    }
+    .tag.active {
+      background-color: #007bff;
+    }
+    .content {
+      flex: 1;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    .question {
+      background: white;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .question h3 {
+      margin: 0;
+    }
+    .difficulty {
+      font-size: 12px;
+      padding: 3px 6px;
+      border-radius: 4px;
+      color: white;
+      margin-left: 10px;
+    }
+    .easy { background-color: green; }
+    .medium { background-color: orange; }
+    .hard { background-color: red; }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+
+      <form method="post" class="filter-form">
+  {% csrf_token %} 
+
+  <h2>Tags</h2>
+  {% for value, label in tag_choices %}
+    <label class="filter-option">
+      <input type="checkbox" name="type" value="{{ value }}" {% if value in selected_types %}checked{% endif %}>
+      {{ label }}
+    </label>
+  {% endfor %}
+
+  <h2>Difficulty</h2>
+  {% for value, label in difficulty_choices %}
+    <label class="filter-option">
+      <input type="checkbox" name="difficulty" value="{{ value }}" {% if value in selected_difficulties %}checked{% endif %}>
+      {{ label }}
+    </label>
+  {% endfor %}
+
+  <div class="apply-container">
+    <button type="submit" class="apply-button">Apply</button>
+  </div>
+</form>
+    </div>
+   </form>
+
+    
+  </div>
+
+  <div class="content">
+    {% for q in questions %}
+  <div class="question">
+    <h3>
+      <a href="{% url 'mypage' %}?name={{ q.name|urlencode }}" style="text-decoration: none; color: inherit;">
+        {{ q.name }}
+        <span class="difficulty {{ q.difficulty|lower }}">{{ q.get_difficulty_display }}</span>
+      </a>
+    </h3>
+    <p>{{ q.description|truncatechars:120 }}</p>
+  </div>
+{% empty %}
+  <p>No questions found with selected tag.</p>
+{% endfor %}
+
+  </div>
+
+</body>
+</html>

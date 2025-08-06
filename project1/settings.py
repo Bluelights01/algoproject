@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-s*-$=p5bo2t)5lqq+)ii(2rntk9y11kzl+@!2@7!@+vsv(t6r+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['algoproject-f8la.onrender.com', 'localhost', '127.0.0.1']
+
 
 
 # Application definition

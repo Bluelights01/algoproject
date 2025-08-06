@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,7 +26,6 @@ SECRET_KEY = 'django-insecure-s*-$=p5bo2t)5lqq+)ii(2rntk9y11kzl+@!2@7!@+vsv(t6r+
 DEBUG = True
 
 ALLOWED_HOSTS = ['algoproject-f8la.onrender.com', 'localhost', '127.0.0.1']
-
 
 
 # Application definition
@@ -117,11 +116,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+# Enable WhiteNoise to serve static files
+MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/index/'
 LOGIN_URL='/login/'
